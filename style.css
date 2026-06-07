@@ -1,0 +1,697 @@
+/* ============================================================
+   Calculus — style.css
+   Aesthetic: Industrial-Refined · Monospace precision · Tactile
+   Author: CodeAlpha Internship · Task 2
+   ============================================================ */
+
+/* ── 1. DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  /* Dark palette (default) */
+  --bg:           #0e0e11;
+  --bg-grid:      rgba(255,255,255,0.028);
+  --surface:      #18181f;
+  --surface-2:    #22222c;
+  --surface-3:    #2c2c3a;
+  --border:       rgba(255,255,255,0.07);
+  --border-2:     rgba(255,255,255,0.13);
+
+  --text-1:       #f2f0eb;
+  --text-2:       #8a8899;
+  --text-3:       #4a4860;
+
+  /* Accent: acid green */
+  --accent:       #b8f058;
+  --accent-dim:   rgba(184,240,88,0.12);
+  --accent-glow:  0 0 20px rgba(184,240,88,0.25);
+
+  /* Key colours */
+  --key-num-bg:     #1e1e28;
+  --key-num-bg-h:   #272733;
+  --key-num-txt:    #f2f0eb;
+
+  --key-util-bg:    #2a2a38;
+  --key-util-bg-h:  #353545;
+  --key-util-txt:   #a8a6c0;
+
+  --key-op-bg:      #1a2630;
+  --key-op-bg-h:    #233040;
+  --key-op-txt:     #58c8f0;
+
+  --key-eq-bg:      var(--accent);
+  --key-eq-bg-h:    #ccf475;
+  --key-eq-txt:     #0a0f00;
+
+  --key-back-txt:   #e07070;
+
+  --shadow-card:  0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-key:   0 4px 12px rgba(0,0,0,0.4);
+  --shadow-key-h: 0 8px 20px rgba(0,0,0,0.5);
+
+  /* Typography */
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Spacing */
+  --gap: 10px;
+  --r:   16px;
+  --r-s:  8px;
+  --r-xl: 28px;
+
+  /* Transitions */
+  --ease:   cubic-bezier(0.4, 0, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 120ms;
+  --t-med:  240ms;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg:           #f0ede6;
+  --bg-grid:      rgba(0,0,0,0.04);
+  --surface:      #faf8f3;
+  --surface-2:    #f0ede6;
+  --surface-3:    #e4e0d6;
+  --border:       rgba(0,0,0,0.08);
+  --border-2:     rgba(0,0,0,0.14);
+
+  --text-1:       #1a1814;
+  --text-2:       #6b6860;
+  --text-3:       #b0ae9a;
+
+  --accent:       #3a7a00;
+  --accent-dim:   rgba(58,122,0,0.1);
+  --accent-glow:  0 0 20px rgba(58,122,0,0.15);
+
+  --key-num-bg:     #eceae2;
+  --key-num-bg-h:   #e2e0d8;
+  --key-num-txt:    #1a1814;
+
+  --key-util-bg:    #dedad0;
+  --key-util-bg-h:  #d4d0c6;
+  --key-util-txt:   #5a5850;
+
+  --key-op-bg:      #dae6f0;
+  --key-op-bg-h:    #ccdce8;
+  --key-op-txt:     #1a5080;
+
+  --key-eq-bg:      #3a7a00;
+  --key-eq-bg-h:    #4a9400;
+  --key-eq-txt:     #f0f8e0;
+
+  --key-back-txt:   #b84040;
+
+  --shadow-card:  0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06);
+  --shadow-key:   0 2px 6px rgba(0,0,0,0.1);
+  --shadow-key-h: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ── 2. RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  transition: background var(--t-med) var(--ease), color var(--t-med) var(--ease);
+  overflow-x: hidden;
+  position: relative;
+}
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
+
+/* ── 3. BACKGROUND GRID ────────────────────────────────────── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* ── 4. APP SHELL ──────────────────────────────────────────── */
+.app-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: shell-in 0.6s var(--ease) both;
+}
+
+@keyframes shell-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 5. HEADER ─────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--accent-glow);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.85); }
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--r-s);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--spring), border-color var(--t-fast) var(--ease);
+}
+
+.icon-btn:hover {
+  background: var(--surface-3);
+  color: var(--text-1);
+  border-color: var(--border-2);
+  transform: scale(1.06);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Theme icon switching */
+[data-theme="dark"]  .icon-moon { display: none; }
+[data-theme="dark"]  .icon-sun  { display: block; }
+[data-theme="light"] .icon-sun  { display: none; }
+[data-theme="light"] .icon-moon { display: block; }
+
+/* ── 6. MAIN LAYOUT ────────────────────────────────────────── */
+.main-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* ── 7. CALCULATOR CARD ────────────────────────────────────── */
+.calc-card {
+  flex: 1;
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background var(--t-med) var(--ease);
+  min-width: 0;
+}
+
+/* ── 8. DISPLAY ────────────────────────────────────────────── */
+.display {
+  background: var(--surface-2);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  padding: 16px 20px 14px;
+  position: relative;
+  overflow: hidden;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Subtle inner accent line */
+.display::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.4;
+}
+
+.display-expr {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+  min-height: 20px;
+  text-align: right;
+  transition: opacity var(--t-fast) var(--ease);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.display-main-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.display-main {
+  font-family: var(--font-mono);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  text-align: right;
+  line-height: 1;
+  transition: font-size var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.display-main.is-error { color: #e07070; font-size: 1.5rem; }
+.display-main.is-result { color: var(--accent); }
+
+/* Copy button */
+.btn-copy {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: var(--r-s);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all var(--t-fast) var(--ease);
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+.btn-copy.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.btn-copy:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Copy toast */
+.copy-toast {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--accent);
+  color: var(--key-eq-txt);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── 9. BACKSPACE ROW ──────────────────────────────────────── */
+.backspace-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -6px;
+}
+
+.key-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 36px;
+  border-radius: var(--r-s);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--key-back-txt);
+  transition: background var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--spring),
+              box-shadow var(--t-fast) var(--ease);
+}
+
+.key-back:hover {
+  background: rgba(224,112,112,0.1);
+  border-color: rgba(224,112,112,0.3);
+  transform: scale(1.08);
+}
+
+.key-back:active { transform: scale(0.94); }
+
+.key-back:focus-visible { outline: 2px solid var(--key-back-txt); outline-offset: 2px; }
+
+/* ── 10. KEYPAD ────────────────────────────────────────────── */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+}
+
+/* ── 11. KEYS ──────────────────────────────────────────────── */
+.key {
+  position: relative;
+  height: 68px;
+  border-radius: var(--r);
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 400;
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-key);
+  transition:
+    background var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--spring),
+    box-shadow var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.key:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Press ripple */
+.key::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: opacity 80ms var(--ease);
+}
+.key:active::after { opacity: 1; }
+
+/* Number keys */
+.key-num {
+  background: var(--key-num-bg);
+  color: var(--key-num-txt);
+  border-color: var(--border);
+}
+.key-num:hover {
+  background: var(--key-num-bg-h);
+  box-shadow: var(--shadow-key-h);
+  transform: translateY(-2px);
+  border-color: var(--border-2);
+}
+.key-num:active { transform: translateY(0) scale(0.95); box-shadow: var(--shadow-key); }
+
+/* Utility keys (C, +/−, %) */
+.key-utility {
+  background: var(--key-util-bg);
+  color: var(--key-util-txt);
+  border-color: var(--border);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+.key-utility:hover {
+  background: var(--key-util-bg-h);
+  box-shadow: var(--shadow-key-h);
+  transform: translateY(-2px);
+  color: var(--text-1);
+}
+.key-utility:active { transform: translateY(0) scale(0.95); }
+
+/* Operator keys */
+.key-op {
+  background: var(--key-op-bg);
+  color: var(--key-op-txt);
+  border-color: rgba(88,200,240,0.1);
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+.key-op:hover {
+  background: var(--key-op-bg-h);
+  box-shadow: var(--shadow-key-h), 0 0 12px rgba(88,200,240,0.15);
+  transform: translateY(-2px);
+  border-color: rgba(88,200,240,0.25);
+}
+.key-op:active { transform: translateY(0) scale(0.95); }
+.key-op.active-op { border-color: var(--key-op-txt); background: var(--key-op-bg-h); }
+
+/* Equals key */
+.key-equals {
+  background: var(--key-eq-bg);
+  color: var(--key-eq-txt);
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-color: transparent;
+}
+.key-equals:hover {
+  background: var(--key-eq-bg-h);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-key-h), var(--accent-glow);
+}
+.key-equals:active { transform: translateY(0) scale(0.95); }
+
+/* Wide key (0) */
+.key-wide {
+  grid-column: span 2;
+  text-align: left;
+  padding-left: 26px;
+}
+
+/* ── 12. HISTORY PANEL ─────────────────────────────────────── */
+.history-panel {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  max-height: 520px;
+  transition: width var(--t-med) var(--ease),
+              opacity var(--t-med) var(--ease),
+              padding var(--t-med) var(--ease);
+  flex-shrink: 0;
+}
+
+.history-panel.open {
+  width: 220px;
+  opacity: 1;
+  padding: 16px;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.history-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.text-btn {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.text-btn:hover { color: #e07070; background: rgba(224,112,112,0.08); }
+.text-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.history-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+
+.history-empty {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-3);
+  text-align: center;
+  margin-top: 24px;
+  list-style: none;
+}
+
+.history-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-s);
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+  animation: item-in 0.2s var(--ease) both;
+}
+
+@keyframes item-in {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.history-item:hover { background: var(--surface-3); border-color: var(--border-2); }
+.history-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.history-expr {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-result {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 13. KBD HINT ──────────────────────────────────────────── */
+.kbd-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.03em;
+  padding: 0 4px;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-2);
+  box-shadow: 0 1px 0 var(--border-2);
+}
+
+/* ── 14. KEY PRESS ANIMATION ───────────────────────────────── */
+@keyframes key-flash {
+  0%   { box-shadow: var(--shadow-key), 0 0 0 3px var(--accent-dim); }
+  100% { box-shadow: var(--shadow-key); }
+}
+
+.key.kbd-flash { animation: key-flash 200ms var(--ease); }
+
+/* ── 15. RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  body { padding: 16px 10px; align-items: flex-start; }
+
+  .app-shell { gap: 12px; }
+
+  .main-layout { flex-direction: column; }
+
+  .history-panel.open {
+    width: 100%;
+    max-height: 200px;
+    order: -1;
+  }
+
+  .calc-card { padding: 14px; }
+
+  .key { height: 60px; font-size: 1.05rem; }
+  .key-wide { padding-left: 18px; }
+
+  .display-main { font-size: clamp(1.8rem, 10vw, 2.4rem); }
+
+  .kbd-hint { display: none; }
+}
+
+/* ── 16. REDUCED MOTION ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
